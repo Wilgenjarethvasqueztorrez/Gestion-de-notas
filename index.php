@@ -39,7 +39,7 @@
             <table id="tabla" class="table table-hover">
                 <thead>
                     <tr>
-                        <th>Nombre Completo</th>
+                        <th>Nombre del Alumno</th>
                         <th>Parcial</th>
                         <th>Año</th>
                         <th>Clase</th>
@@ -100,11 +100,13 @@
             </table>
         </div>
     </main>
+
     <!-- Inicializar DataTables -->
     <?php include('src/includes/Dependencias/datatables.php'); ?>
 
     <!-- Inicializar SweetAlert2 -->
     <?php include('src/includes/Dependencias/sweetalert.php'); ?>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 </body>

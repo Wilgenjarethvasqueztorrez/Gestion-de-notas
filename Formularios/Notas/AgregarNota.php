@@ -76,6 +76,7 @@
           name="Valor"
           min="0"
           max="100"
+          maxlength="3"
           placeholder="Ingrese la nota (0 - 100)"
           required>
       </div>
