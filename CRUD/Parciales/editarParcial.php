@@ -13,7 +13,7 @@ $sql = "UPDATE parciales SET
            
 
 if ($resultado = $conexion->query($sql)) {
-    header("location:../../parcial.php?success=editado");  
+    header("location:../../pages/parcial.php?success=editado");  
 } else {  
-    header("location:../../parcial.php?error=db");  
+    header("location:../../pages/parcial.php?error=db");  
 }

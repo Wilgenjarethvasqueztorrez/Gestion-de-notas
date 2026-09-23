@@ -1,14 +1,18 @@
 <?php
+include("../../Config/Conexion.php");
 
-include ("../../Config/Conexion.php");
-
-$Id = $_GET["Id"];
-$sql = "DELETE FROM clases WHERE id=".$Id."";
-
-$query = mysqli_query($conexion,$sql);
-
-if ($query === TRUE) {
-    header("location:../../clase.php?success=eliminado");  
-} else {  
-    header("location:../../clase.php?error=db");  
+$id = filter_input(INPUT_GET, 'Id', FILTER_VALIDATE_INT);
+if (!$id) {
+    header("location:../../pages/clase.php?error=datos");
+    exit;
 }
+
+$stmt = $conexion->prepare("DELETE FROM clases WHERE id = ?");
+$stmt->bind_param('i', $id);
+
+if ($stmt->execute()) {
+    header("location:../../pages/clase.php?success=eliminado");
+} else {
+    header("location:../../pages/clase.php?error=db");
+}
+exit;

@@ -2,19 +2,18 @@
 
 include ("../../Config/Conexion.php");
 
-$alumno = $_POST['NombreAlumno'];
-$parcial = $_POST['NumeroParcial'];
-$clase = $_POST['NombreClase'];
-$valor = $_POST['Valor'];
+$matricula = filter_input(INPUT_POST, 'Matricula', FILTER_VALIDATE_INT);
+$parcial = filter_input(INPUT_POST, 'NumeroParcial', FILTER_VALIDATE_INT);
+$valor = filter_input(INPUT_POST, 'Valor', FILTER_VALIDATE_INT);
 
-$sql = "INSERT INTO notas(alumno_id,parcial_id,clase_id,valor) VALUES('$alumno','$parcial','$clase','$valor')";
-
-$resultado = mysqli_query($conexion, $sql);
+$stmt = $conexion->prepare("INSERT INTO notas (matricula_id, parcial_id, valor) VALUES (?, ?, ?)");
+$stmt->bind_param('iii', $matricula, $parcial, $valor);
+$resultado = $matricula && $parcial && $valor !== false && $valor >= 0 && $valor <= 100 && $stmt->execute();
 
 if ($resultado === TRUE) {
-    header("location:../../index.php?success=agregado");  
+    header("location:../../pages/nota.php?success=agregado");  
 } else {  
-    header("location:../../index.php?error=db");  
+    header("location:../../pages/nota.php?error=db");  
 }
 
 

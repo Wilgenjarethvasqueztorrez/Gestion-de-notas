@@ -8,7 +8,7 @@ $sql = "DELETE FROM parciales WHERE id=".$Id."";
 $query = mysqli_query($conexion,$sql);
 
 if ($query === TRUE) {
-    header("location:../../parcial.php?success=eliminado");  
+    header("location:../../pages/parcial.php?success=eliminado");  
 } else {  
-    header("location:../../parcial.php?error=db");  
+    header("location:../../pages/parcial.php?error=db");  
 }

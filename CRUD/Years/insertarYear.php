@@ -9,7 +9,7 @@ $sql = "INSERT INTO years(nombre) VALUES('$nombre')";
 $resultado = mysqli_query($conexion, $sql);
 
 if ($resultado)  {  
-    header("location:../../year.php?success=agregado");  
+    header("location:../../pages/year.php?success=agregado");  
 } else {  
-    header("location:../../year.php?error=db");  
+    header("location:../../pages/year.php?error=db");  
 }

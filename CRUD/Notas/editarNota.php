@@ -2,22 +2,17 @@
 
 include ("../../Config/Conexion.php");
 
-$id = $_POST['Id'];
-$Alumno = $_POST['alumnos'];
-$Parcial = $_POST['parciales'];
-$Clase = $_POST['clases'];
-$Valor = $_POST['valores'];
+$id = filter_input(INPUT_POST, 'Id', FILTER_VALIDATE_INT);
+$matricula = filter_input(INPUT_POST, 'matricula', FILTER_VALIDATE_INT);
+$parcial = filter_input(INPUT_POST, 'parcial', FILTER_VALIDATE_INT);
+$valor = filter_input(INPUT_POST, 'valor', FILTER_VALIDATE_INT);
 
-$sql = "UPDATE notas SET 
-               id='".$id."', 
-               alumno_id='".$Alumno."', 
-               parcial_id='".$Parcial."', 
-               clase_id='".$Clase."', 
-               valor='".$Valor."' WHERE id = ".$id."";
+$stmt = $conexion->prepare("UPDATE notas SET matricula_id = ?, parcial_id = ?, valor = ? WHERE id = ?");
+$stmt->bind_param('iiii', $matricula, $parcial, $valor, $id);
 
-if ($resultado = $conexion->query($sql)) {
-    header("location:../../index.php?success=editado");  
+if ($id && $matricula && $parcial && $valor !== false && $valor >= 0 && $valor <= 100 && $stmt->execute()) {
+    header("location:../../pages/nota.php?success=editado");  
 } else {  
-    header("location:../../index.php?error=db");  
+    header("location:../../pages/nota.php?error=db");  
 }
   

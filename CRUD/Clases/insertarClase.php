@@ -1,16 +1,31 @@
 <?php
+include("../../Config/Conexion.php");
 
-include ("../../Config/Conexion.php");
+$nombre = trim($_POST['NombreClase'] ?? '');
+$profesorId = filter_input(INPUT_POST, 'ProfesorId', FILTER_VALIDATE_INT);
+$profesorId = $profesorId ?: null;
 
-$nombre = $_POST['NombreClase'];
-
-
-$sql = "INSERT INTO clases(nombre) VALUES('$nombre')";
-
-$resultado = mysqli_query($conexion, $sql);
-
-if ($resultado === TRUE) {
-    header("location:../../clase.php?success=agregado");  
-} else {  
-    header("location:../../clase.php?error=db");  
+if ($nombre === '' || mb_strlen($nombre) > 100) {
+    header("location:../../pages/clase.php?error=datos");
+    exit;
 }
+
+if ($profesorId !== null) {
+    $profesor = $conexion->prepare("SELECT id FROM usuarios WHERE id = ? AND rol_sistema = 'Profesor'");
+    $profesor->bind_param('i', $profesorId);
+    $profesor->execute();
+    if (!$profesor->get_result()->fetch_assoc()) {
+        header("location:../../pages/clase.php?error=profesor_invalido");
+        exit;
+    }
+}
+
+$stmt = $conexion->prepare("INSERT INTO clases (nombre, profesor_id) VALUES (?, ?)");
+$stmt->bind_param('si', $nombre, $profesorId);
+
+if ($stmt->execute()) {
+    header("location:../../pages/clase.php?success=agregado");
+} else {
+    header("location:../../pages/clase.php?error=db");
+}
+exit;

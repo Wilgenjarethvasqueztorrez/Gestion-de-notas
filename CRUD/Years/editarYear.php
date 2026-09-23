@@ -10,7 +10,7 @@ $sql ="UPDATE years SET
           nombre='".$Year."' WHERE id= ".$id."";
 
 if (mysqli_query($conexion, $sql)) {  
-    header("location:../../year.php?success=editado");  
+    header("location:../../pages/year.php?success=editado");  
 } else {  
-    header("location:../../year.php?error=db");  
+    header("location:../../pages/year.php?error=db");  
 }

@@ -8,7 +8,7 @@ $sql = "DELETE FROM notas WHERE id=".$Id."";
 $query = mysqli_query($conexion,$sql);
 
 if ($query === TRUE) {
-    header("location:../../index.php?success=eliminado");  
+    header("location:../../pages/nota.php?success=eliminado");  
 } else {  
-    header("location:../../index.php?error=db");  
+    header("location:../../pages/nota.php?error=db");  
 }
