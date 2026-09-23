@@ -1,56 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Agregar alumno</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="../../src/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Agregar alumno</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../src/css/styles.css" />
 </head>
 
-<body>
-  <h1 class="bg-black p-2 text-white text-center">AGREGAR ALUMNO</h1>
-  <div class="container">
-    <form action="../../CRUD/Alumnos/insertarAlumno.php" method="post">
+<body class="bg-dark">
+    <div class="container" style="max-width: 650px;">
+        <div class="form-card-container">
+            <h1 class="form-title-custom text-center mb-4">👨‍🎓 Agregar Alumno</h1>
+            <form action="../../CRUD/Alumnos/insertarAlumno.php" method="post">
 
-      <div class="mb-3">
-        <label class="form-label">Nombre</label>
-        <input type="text" class="form-control" name="NombreAlumno">
-      </div>
+                <div class="mb-3">
+                    <label class="form-label-custom">Usuario del Sistema</label>
+                    <select id="select2" class="form-select form-control-custom" name="UsuarioId" required>
+                        <option selected disabled value="">-- Seleccionar usuario --</option>
+                        <?php
+            include("../../Config/Conexion.php");
+            $sql = $conexion->query("SELECT id, nombre, apellido, correo, rol_sistema   
+                                                 FROM usuarios WHERE rol_sistema = 'Estudiante' 
+                                                 ORDER BY nombre ASC");
+            while ($resultado = $sql->fetch_assoc()) {
+              echo "<option value='" . $resultado['id'] . "'>"
+                . $resultado['nombre'] . " " . $resultado['apellido']
+                . " (" . $resultado['rol_sistema'] . ") - " . $resultado['correo'] . "</option>";
+            }
+            ?>
+                    </select>
+                </div>
 
-      <div class="mb-3">
-        <label class="form-label">Apellido</label>
-        <input type="text" class="form-control" name="ApellidoAlumno">
-      </div>
+                <div class="mb-3">
+                    <label class="form-label-custom">Estado</label>
+                    <select class="form-select form-control-custom" name="EstadoAlumno" required>
+                        <option value="Activo">🟢 Activo</option>
+                        <option value="Suspendido">🔴 Suspendido</option>
+                        <option value="Graduado">🎓 Graduado</option>
+                    </select>
+                </div>
 
-      <div class="mb-3">
-        <label class="form-label">Genero</label>
-        <input type="text" class="form-control" name="GeneroAlumno">
-      </div>
+                <div class="d-flex justify-content-center gap-3">
+                    <button type="submit" class="btn-submit-custom">
+                        <i class="bi bi-check-circle-fill me-1"></i> Registrar
+                    </button>
+                    <a href="../../pages/alumno.php"
+                        class="btn-cancel-custom text-decoration-none d-flex align-items-center justify-content-center">
+                        <i class="bi bi-x-circle-fill me-1"></i>
+                        Cancelar
+                    </a>
+                </div>
 
-      <div class="mb-3">
-        <label class="form-label">Dirección</label>
-        <input type="text" class="form-control" name="DireccionAlumno">
-      </div>
+            </form>
+        </div>
+    </div>
 
-      <div class="mb-3">
-        <label class="form-label">Telefono</label>
-        <input type="number" class="form-control" name="TelefonoAlumno">
-      </div>
+    <?php include('../../src/includes/Dependencias/Select2.php'); ?>
 
-      <div class="mb-3">
-        <label class="form-label">Correo</label>
-        <input type="gmeil" class="form-control" name="CorreoAlumno">
-      </div>
-      <div class="text-center">
-        <button type="submit" class="btn btn-dark">Registrar</button>
-        <a href="../../alumno.php" class="btn btn-dark">Regresar</a>
-      </div>
-
-    </form>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
 
 </html>

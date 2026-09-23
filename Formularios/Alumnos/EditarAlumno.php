@@ -1,73 +1,83 @@
+<?php
+// Proteger la página    
+require("../../Config/verificarSesion.php");
+// Verificar que solo roles con permisos de gestión puedan acceder
+verificarRol(['Administrador', 'Oficina']);
+
+include('../../Config/Conexion.php');
+
+// Obtener datos del empleado de forma segura
+$id = intval($_GET['Id']);
+$sql = "SELECT * FROM alumnos WHERE id = $id";
+$resultado = $conexion->query($sql);
+$row = $resultado->fetch_assoc();
+?>
+
 <!doctype html>
-<html lang="en">
+<html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Editar alumno</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <link rel="stylesheet" href="../../src/css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Editar alumno</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../src/css/styles.css?v=3.1" />
 </head>
 
-<body>
-  <h1 class="bg-black p-2 text-white text-center">EDITAR ALUMNO</h1>
-  <div class="container">
-    <form class="container" action="../../CRUD/Alumnos/editarAlumno.php" method="post">
-      <?php
-      include('../../Config/Conexion.php');
+<body class="bg-dark">
 
-      $sql = "SELECT * FROM alumnos WHERE id =" . $_GET['Id'];
-      $resultado = $conexion->query($sql);
+    <div class="container" style="max-width: 650px;">
 
-      $row = $resultado->fetch_assoc();
-      ?>
+        <div class="form-card-container shadow-sm">
+            <h1 class="form-title-custom text-center mb-4">✏️ Editar Alumno</h1>
 
-      <!--Traer datos de valores-->
-      <div>
-        <input type="hidden" class="form-control" name="Id" value="<?php echo $row['id']; ?>">
-      </div>
+            <form action="../../CRUD/Alumnos/editarAlumno.php" method="post">
+                <input type="hidden" name="Id" value="<?php echo $row['id']; ?>">
 
-      <!--Traer datos de nombre-->
-      <div class="mb-3">
-        <label class="form-label">Nombre</label>
-        <input type="text" class="form-control" name="nombre" value="<?php echo $row['nombres']; ?>">
-      </div>
+                <div class="mb-3">
+                    <label class="form-label-custom">Usuario del Sistema vinculado</label>
+                    <select id="select2" class="form-select form-control-custom" name="UsuarioId" required>
+                        <?php
+            $sqlUsuarios = $conexion->query("SELECT id, nombre, apellido, correo, rol_sistema FROM usuarios WHERE rol_sistema = 'Estudiante' ORDER BY nombre ASC");
+            while ($usuario = $sqlUsuarios->fetch_assoc()) {
+              $selected = ($row['alumno_id'] == $usuario['id']) ? "selected" : "";
+              echo "<option value='" . $usuario['id'] . "' $selected>"
+                . htmlspecialchars($usuario['nombre'] . " " . $usuario['apellido'] . " (" . $usuario['rol_sistema'] . ") — " . $usuario['correo'], ENT_QUOTES, 'UTF-8') . "</option>";
+            }
+            ?>
+                    </select>
+                </div>
 
-      <!--Traer datos de apellido-->
-      <div class="mb-3">
-        <label class="form-label">Apellido</label>
-        <input type="text" class="form-control" name="apellido" value="<?php echo $row['apellidos']; ?>">
-      </div>
+                <div class="mb-4">
+                    <label class="form-label-custom">Estado</label>
+                    <select class="form-select form-control-custom" name="estado" required>
+                        <option value="Activo" <?php echo ($row['estado'] === 'Activo') ? "selected" : ""; ?>>🟢 Activo
+                        </option>
+                        <option value="Suspendido" <?php echo ($row['estado'] === 'Suspendido') ? "selected" : ""; ?>>🔴
+                            Suspendido</option>
+                        <option value="Graduado" <?php echo ($row['estado'] === 'Graduado') ? "selected" : ""; ?>>🎓
+                            Graduado</option>
+                    </select>
+                </div>
 
-      <!--Traer datos de clases-->
-      <div class="mb-3">
-        <label class="form-label">Genero</label>
-        <input type="text" class="form-control" name="generos" value="<?php echo $row['genero']; ?>">
-      </div>
+                <div class="d-flex justify-content-center gap-3">
+                    <button type="submit" class="btn-submit-custom">
+                        <i class="bi bi-arrow-clockwise me-1"></i> Actualizar
+                    </button>
+                    <a href="../../pages/alumno.php"
+                        class="btn-cancel-custom text-decoration-none d-flex align-items-center justify-content-center">
+                        <i class="bi bi-x-circle-fill me-1"></i>
+                        Cancelar
+                    </a>
+                </div>
 
-      <!--Traer datos de direccion-->
-      <div class="mb-3">
-        <label class="form-label">Direccion</label>
-        <input type="text" class="form-control" name="direcciones" value="<?php echo $row['direccion']; ?>">
-      </div>
+            </form>
+        </div>
+    </div>
 
-      <!--Traer datos de telefono-->
-      <div class="mb-3">
-        <label class="form-label">Telefono</label>
-        <input type="text" class="form-control" name="telefonos" value="<?php echo $row['telefono']; ?>">
-      </div>
-
-      <!--Traer datos de correo-->
-      <div class="mb-3">
-        <label class="form-label">Correo</label>
-        <input type="text" class="form-control" name="correos" value="<?php echo $row['correo']; ?>">
-      </div>
-
-      <div class="text-center">
-        <button type="submit" class="btn btn-dark">Actualizar</button>
-        <a href="../../alumno.php" class="btn btn-dark">Regresar</a>
-      </div>
-
-    </form>
-  </div>
+    <?php include(BASE_PATH. "src/includes/Dependencias/Select2.php"); ?>
 </body>
+
+</html>
