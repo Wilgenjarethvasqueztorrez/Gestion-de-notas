@@ -1,3 +1,4 @@
+<?php require('../Config/verificarSesion.php'); ?>
 <!doctype html>
 <html lang="es">
 
@@ -19,17 +20,18 @@
   <!-- DataTables Responsive -->
   <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 
-  <link rel="stylesheet" href="src/css/styles.css">
+  <link rel="stylesheet" href="<?php echo BASE_URL; ?>src/css/styles.css">
 </head>
 
 <body>
-  <?php include('src/includes/Componentes/sidebar.php'); ?>
+  <?php include(BASE_PATH . 'src/includes/Componentes/sidebar.php'); ?>
 
   <main class="container mt-4">
+    <?php include(BASE_PATH . 'src/includes/Componentes/userbar.php'); ?>
     <h1 class="bg-info p-3 text-white text-center rounded">📅 LISTADO DE AÑOS</h1>
 
     <div class="text-end mb-3">
-      <a href="Formularios/Years/AgregarYear.php" class="btn btn-success">
+      <a href="<?php echo BASE_URL; ?>Formularios/Years/AgregarYear.php" class="btn btn-success">
         <i class="bi bi-plus-circle"></i> Agregar Año
       </a>
     </div>
@@ -44,7 +46,7 @@
         </thead>
         <tbody>
           <?php
-          require("Config/Conexion.php");
+          require(BASE_PATH . "Config/Conexion.php");
 
           $sql = $conexion->query("SELECT * FROM years
      
@@ -56,11 +58,11 @@
 
               <td scope="row"><?php echo $resultado['nombre'] ?></td>
               <td class="acciones">
-                <a href="Formularios/Years/EditarYear.php?Id=<?php echo $resultado['id']; ?>"
+                <a href="<?php echo BASE_URL; ?>Formularios/Years/EditarYear.php?Id=<?php echo $resultado['id']; ?>"
                   class="btn btn-warning btn-sm">
                   <i class="bi bi-pencil"></i> Editar
                 </a>
-                <a href="CRUD/Years/eliminarYear.php?Id=<?php echo $resultado['id']; ?>"
+                <a href="<?php echo BASE_URL; ?>CRUD/Years/eliminarYear.php?Id=<?php echo $resultado['id']; ?>"
                   class="btn btn-danger btn-sm"
                   onclick="event.preventDefault(); confirmarEliminacion(this.href)">
                   <i class="bi bi-trash3"></i> Eliminar
@@ -77,10 +79,10 @@
   </main>
 
   <!-- Inicializar DataTables -->
-  <?php include('src/includes/Dependencias/datatables.php'); ?>
+  <?php include(BASE_PATH . 'src/includes/Dependencias/datatables.php'); ?>
 
   <!-- Inicializar SweetAlert2 -->
-  <?php include('src/includes/Dependencias/sweetalert.php'); ?>
+  <?php include(BASE_PATH . 'src/includes/Dependencias/sweetalert.php'); ?>
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 </body>
