@@ -23,22 +23,34 @@
             "buttons": [{
                     extend: 'copy',
                     className: 'btn btn-primary', // Quitado btn-sm  
-                    text: '<i class="bi bi-clipboard"></i> Copiar'
+                    text: '<i class="bi bi-clipboard"></i> Copiar',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Excluye la última columna
+                    }
                 },
                 {
                     extend: 'excel',
                     className: 'btn btn-success', // Verde para Excel  
-                    text: '<i class="bi bi-file-earmark-excel"></i> Excel'
+                    text: '<i class="bi bi-file-earmark-excel"></i> Excel',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Excluye la última columna
+                    }
                 },
                 {
                     extend: 'pdf',
                     className: 'btn btn-danger', // Rojo para PDF  
-                    text: '<i class="bi bi-file-earmark-pdf"></i> PDF'
+                    text: '<i class="bi bi-file-earmark-pdf"></i> PDF',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Excluye la última columna
+                    }
                 },
                 {
                     extend: 'print',
                     className: 'btn btn-secondary', // Gris para imprimir  
-                    text: '<i class="bi bi-printer"></i> Imprimir'
+                    text: '<i class="bi bi-printer"></i> Imprimir',
+                    exportOptions: {
+                        columns: ':not(:last-child)' // Excluye la última columna
+                    }
                 }
             ]
 
