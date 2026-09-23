@@ -1,0 +1,23 @@
+<?php  
+include("../../Config/Conexion.php");  
+  
+// Recibir datos del formulario  
+$id = $_POST['Id'];  
+$nombre = $_POST['NombreUsuario'];  
+$apellido = $_POST['ApellidoUsuario'];  
+$correo = $_POST['CorreoUsuario'];  
+$rol_sistema = $_POST['RolSistema'];  
+  
+// Actualizar solo la tabla usuarios  
+$sql = "UPDATE usuarios   
+        SET nombre='$nombre',   
+            apellido='$apellido',   
+            correo='$correo',   
+            rol_sistema='$rol_sistema'   
+        WHERE id=$id";  
+  
+if (mysqli_query($conexion, $sql)) {  
+    header("location:../../pages/usuario.php?success=editado");  
+} else {  
+    header("location:../../pages/usuario.php?error=db");  
+}
